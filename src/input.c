@@ -68,5 +68,11 @@ void handleInputMenu(uint8_t menuOptionsTotal) {
 			}
     }
 		
+		if (joy & J_A && !(joypast & J_A)){
+			menuConfirm = TRUE;
+		} else if (joy & J_B && !(joypast & J_B)) {
+			menuBack = TRUE;
+		}
+		
 		joypast = joy;
 }

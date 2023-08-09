@@ -5,6 +5,9 @@ extern uint8_t gamemodec;
 
 extern uint8_t menuOption;
 
+extern bool menuConfirm;
+extern bool menuBack;
+
 //player position
 extern int16_t player_sprite_X,player_sprite_Y;
 extern bool player_move_left;

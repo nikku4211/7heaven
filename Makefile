@@ -51,11 +51,11 @@ OBJDIR      = obj
 RESDIR      = res
 LEVDIR			= level
 IMAGEFILES  = $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.png)))
-LEVELFILES = $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.csv)))
+#LEVELFILES = $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.csv)))
 BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
-LEVELS		 = 	$(LEVELFILES:%.csv=$(LEVDIR)/%.c) $(LEVELFILES:%.csv=$(LEVDIR)/%.h)
+#LEVELS		 = 	$(LEVELFILES:%.csv=$(LEVDIR)/%.c) $(LEVELFILES:%.csv=$(LEVDIR)/%.h)
 PNGS       =	$(IMAGEFILES:%.png=$(RESDIR)/%.2bpp)
 OBJS			 =	$(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
 
@@ -76,11 +76,11 @@ $(RESDIR)/%spr.2bpp:	$(RESDIR)/%spr.png
 #	tools/gfx --png $< --interleave -o $@ $@
 
 # Compile .csv files in "level/" to C arrays
-$(LEVDIR)/%.c:	$(LEVDIR)/%.csv
-	$(PY) $(TOOLDIR)/csvtoc.py -i $< > $@
+#$(LEVDIR)/%.c:	$(LEVDIR)/%.csv
+#	$(PY) $(TOOLDIR)/csvtoc.py -i $< > $@
 	
-$(LEVDIR)/%.h: $(LEVDIR)/%.csv
-	$(PY) $(TOOLDIR)/csvtoh.py -i $< > $@
+#$(LEVDIR)/%.h: $(LEVDIR)/%.csv
+#	$(PY) $(TOOLDIR)/csvtoh.py -i $< > $@
 
 # Compile .png files in "res/" to row-major 2bpp files
 #$(RESDIR)/%.c:	$(RESDIR)/%.png
@@ -116,7 +116,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 	$(LCC) $(LCCFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
-$(BINS):	$(LEVELS) $(PNGS) $(OBJS)
+$(BINS):	$(PNGS) $(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
 
 prepare:

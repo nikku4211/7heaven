@@ -6,9 +6,12 @@
 
 #include "global.h"
 
-uint8_t gamemodec = 1;
+uint8_t gamemodec = 0;
 
 uint8_t menuOption;
+
+bool menuConfirm = FALSE;
+bool menuBack = FALSE;
 
 //player position
 int16_t player_sprite_X,player_sprite_Y;

@@ -115,57 +115,79 @@ void main(void)
 		HIDE_BKG; DISPLAY_OFF;
 	}
 	
-	add_VBL(vblank_sync_gameplay);
-	
-	loadLevel();
-	
 	//turn on lcd display
 	DISPLAY_ON;
 	
 	//all sprites will be tall
 	SPRITES_8x16;
 	
-	while(gamemodec == 1){
-		handleInputGameplay();
+	while(1){
+		if(gamemodec == 0){
+			add_VBL(vblank_sync_gameplay);
+			loadLevel();
+			gamemodec = 1;
+		}else if (gamemodec == 1){
+			handleInputGameplay();
+					
+			/* //speed limit
+			if (player_velocity_Y > 64) player_velocity_Y = 64;
+			if (player_velocity_X > 64) player_velocity_X = 64;
+			
+			//move sprites by velocity
+			player_sprite_X += player_velocity_X;
+			player_sprite_Y += player_velocity_Y;
+			
+			// decelerate 
+			if (player_velocity_Y >= 0) {
+				if (player_velocity_Y) player_velocity_Y--; 
+			} else player_velocity_Y ++;
+			if (player_velocity_X >= 0) {
+				if (player_velocity_X) player_velocity_X--; 
+			} else player_velocity_X ++; */
+			
+			// check player-map collision
+			playerMapCollision(current_level->collision_maps);
+			
+			animatePlayer();
+			
+			scanline_player_graphics_upload();
+			
+			if(enemy_present && (enemy_sprite_X-cameraX) < horizontalresolution && (enemy_sprite_X-cameraX) > 0){
+				zombieLogic();
+				playerEnemyCollision();
+			}
+			
+			// move camera if needed
+			camera();
+			
+			invincibleFrameCount();
+		} else if (gamemodec == 2) {
+			gameOver();
+		} else if (gamemodec == 3) {
+			//draw menu cursor
+			print_text_bkg(5, 11, " ");
+			print_text_bkg(5, 12, " ");
+			print_text_bkg(5, 11+menuOption, ">");
+			
+			//select from 2 options in menu
+			handleInputMenu(2);
+			
+			if (menuOption == 0 && menuConfirm){
+				menuConfirm = FALSE;
+				gamemodec = 0;
+				//wait until next frame
+				wait_vbl_done();
 				
-		/* //speed limit
-		if (player_velocity_Y > 64) player_velocity_Y = 64;
-		if (player_velocity_X > 64) player_velocity_X = 64;
-		
-		//move sprites by velocity
-		player_sprite_X += player_velocity_X;
-		player_sprite_Y += player_velocity_Y;
-		
-		// decelerate 
-    if (player_velocity_Y >= 0) {
-      if (player_velocity_Y) player_velocity_Y--; 
-    } else player_velocity_Y ++;
-    if (player_velocity_X >= 0) {
-      if (player_velocity_X) player_velocity_X--; 
-    } else player_velocity_X ++; */
-		
-		// check player-map collision
-		playerMapCollision(current_level->collision_maps);
-		
-		animatePlayer();
-		
-		scanline_player_graphics_upload();
-		
-		if(enemy_present && (enemy_sprite_X-cameraX) < horizontalresolution && (enemy_sprite_X-cameraX) > 0){
-			zombieLogic();
-			playerEnemyCollision();
+				if (_cpu == CGB_TYPE) {
+						set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
+				} else {
+						BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
+				}
+			}
 		}
-		
-		// move camera if needed
-		camera();
-		
-		invincibleFrameCount();
 		
 		// Done processing, yield CPU and wait for start of next frame
     wait_vbl_done();
-	}
-	if (gamemodec == 2) {
-		gameOver();
 	}
 }
 
@@ -262,23 +284,12 @@ void gameOver(){
 	} else {
 			BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
 	}
-
-
-	// Loop forever
-	while(1) {
-		//draw menu cursor
-		print_text_bkg(5, 11, " ");
-		print_text_bkg(5, 12, " ");
-		print_text_bkg(5, 11+menuOption, ">");
-		
-		//select from 2 options in menu
-		handleInputMenu(2);
-		// Done processing, yield CPU and wait for start of next frame
-		wait_vbl_done();
-	}
+	gamemodec = 3;
 }
 
 void loadLevel(){
+	
+	gamemodec = 1;
 	
 	HIDE_BKG;
 	HIDE_SPRITES;
@@ -288,6 +299,10 @@ void loadLevel(){
 	
 	player_sprite_X=72;
 	player_sprite_Y=0;
+	
+	player_life = 8;
+	
+	player_direction = 1;
 	
 	enemy_sprite_X=192;
 	enemy_sprite_Y=72;
@@ -313,9 +328,12 @@ void loadLevel(){
 	set_sprite_data(32, 44, zombie_tiles);
 	//set background tile data
 	set_bkg_data(0,128,testbgset);
+	
+	map_pos_x = map_pos_y = 0; 
+  old_map_pos_x = old_map_pos_y = 255;
+	
 	//set background tilemap
-	set_bkg_tiles(0,0,current_level->map_width,current_level->map_height,current_level->tile_maps);
-	set_bkg_submap(map_pos_x, map_pos_y, 20, current_level->map_height, current_level->tile_maps, current_level->map_width);
+	set_bkg_submap(map_pos_x, map_pos_y, 32, current_level->map_height, current_level->tile_maps, current_level->map_width);
 	//set window tile data
 	set_win_data(240,4,healthfont);
 
@@ -327,7 +345,4 @@ void loadLevel(){
 	move_win(7, 128);
 	
 	set_win_tiles(1,0,2+player_life,1,health_hud_map);
-	
-	map_pos_x = map_pos_y = 0; 
-  old_map_pos_x = old_map_pos_y = 255;
 }
