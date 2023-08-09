@@ -35,6 +35,15 @@ var customCArrayMapFormat = {
 		function(p_map, p_fileName){
 			console.time("Export completed in");
 			
+			// Only allow valid map sizes to be parsed
+			if (p_map.width % 32 != 0) {
+				return "Export failed: Invalid map size! Map width must be a multiple of 32.";
+			}
+
+			// Standard screenblock size for SNES
+			const SCREENBLOCKWIDTH = 32;
+			const SCREENBLOCKHEIGHT = 32;
+			
 			// Split full filename path into the filename (without extension) and the directory
       var fileBaseName = FileInfo.completeBaseName(p_fileName).replace(/[^a-zA-Z0-9-_]/g, "_");
       var filePath = FileInfo.path(p_fileName)+"/";
@@ -53,6 +62,9 @@ var customCArrayMapFormat = {
 				// Replace special characters for an underscore
 				let currentLayerName = currentLayer.name.replace(/[^a-zA-Z0-9-_]/g, "_");
 				
+				let screenBlockCountX = currentLayer.width/SCREENBLOCKWIDTH;
+        let screenBlockCountY = currentLayer.height/SCREENBLOCKHEIGHT;
+				
 				if (currentLayer.isTileLayer) {
 					for (let y = 0; y < currentLayer.height; ++y) {
 						for (let x = 0; x < currentLayer.width; ++x) {
@@ -68,29 +80,35 @@ var customCArrayMapFormat = {
 								sourceFileData += currentTileID+",";
 							}
 						}
+						sourceFileData += "\n";
 					}
 				}
 				
 				currentLayer = p_map.layerAt(1);
 				
 				if (currentLayer.isTileLayer) {
-					for (let y = 0; y < currentLayer.height; ++y) {
-						for (let x = 0; x < currentLayer.width; ++x) {
-							let currentTileX = x;
-							let currentTileY = y;
-							let currentTile = currentLayer.cellAt(currentTileX, currentTileY);
-							var currentTileID = currentTile.tileId;
+					for (let j = 0; j < screenBlockCountY; ++j) {
+            for (let k = 0; k < screenBlockCountX; ++k) {
+							for (let y = 0; y < currentLayer.height; ++y) {
+								for (let x = 0; x < SCREENBLOCKWIDTH; ++x) {
+									let currentTileX = x+(SCREENBLOCKWIDTH*k);
+                  let currentTileY = y;
+									let currentTile = currentLayer.cellAt(currentTileX, currentTileY);
+									var currentTileID = currentTile.tileId;
 
-							// Default to 0 for blank tiles
-							if (currentTileID == "-1") {
-								sourceFileData2 += "0,";
-							} else {
-								sourceFileData2 += currentTileID+",";
+									// Default to 0 for blank tiles
+									if (currentTileID == "-1") {
+										sourceFileData2 += "0,";
+									} else {
+										sourceFileData2 += currentTileID+",";
+									}
+								}
+								sourceFileData2 += "\n";
 							}
 						}
+						sourceFileData2 += "\n";
 					}
 				}
-			
 			sourceFileData +="};";
 			sourceFileData2 +="};";
 			
