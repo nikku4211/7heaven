@@ -8,16 +8,21 @@
 
 TOOLDIR = tools
 
-RGBDS_HOME = ../rgbds/
+RGBDS_HOME = ../rgbds
 #RGBGFX = rgbgfx
 
 #RGBGFXFLAGSSPR = -Z
 #RGBGFXFLAGSTIL =  
 #RGBGFXFLAGSMAP = -T
 
-RGBASM = $(RGBDS_HOME)/rgbasm
+RGBASM = $(RGBDS_HOME)/win64/rgbasm
+
+RGB2SDAS = python $(TOOLDIR)/rgb2sdas.py
+RGB2SDASFLAGS = -b 0
 
 GBDK_HOME = ../GBDK/
+
+ROMUSAGE = ../romusage/romusage
 
 LCC = $(GBDK_HOME)bin/lcc 
 PNG2ASSET = $(GBDK_HOME)bin/png2asset
@@ -50,14 +55,17 @@ SRCDIR      = src
 OBJDIR      = obj
 RESDIR      = res
 LEVDIR			= level
+MUSDIR			= music
 IMAGEFILES  = $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.png)))
 #LEVELFILES = $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.csv)))
 BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
-CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(MUSDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
+RGBASMSOURCES	=	$(foreach dir,$(MUSDIR),$(notdir $(wildcard $(dir)/*.asm)))
 #LEVELS		 = 	$(LEVELFILES:%.csv=$(LEVDIR)/%.c) $(LEVELFILES:%.csv=$(LEVDIR)/%.h)
 PNGS       =	$(IMAGEFILES:%.png=$(RESDIR)/%.2bpp)
-OBJS			 =	$(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
+OBJS			 =	$(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o) $(RGBASMSOURCES:%.asm=$(OBJDIR)/%.o)
+RGOBJS		 =	$(RGBASMSOURCES:%.asm=$(OBJDIR)/%.obj)
 
 all:	prepare $(BINS)
 
@@ -106,6 +114,16 @@ $(OBJDIR)/%.o:	$(RESDIR)/%.c
 $(OBJDIR)/%.o:	$(LEVDIR)/%.c
 	$(LCC) $(LCCFLAGS) -c -o $@ $<
 
+# Compile .c files in "level/" to .o object files
+$(OBJDIR)/%.o:	$(MUSDIR)/%.c
+	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	
+$(OBJDIR)/%.obj:	$(MUSDIR)/%.asm
+	$(RGBASM) -i.. -DGBDK -o$@ $<
+	
+$(OBJDIR)/%.o:	$(OBJDIR)/%.obj
+	$(RGB2SDAS) $(RGB2SDASFLAGS) -o$@ $<
+
 # Compile .s assembly files in "src/" to .o object files
 $(OBJDIR)/%.o:	$(SRCDIR)/%.s
 	$(LCC) $(LCCFLAGS) -c -o $@ $<
@@ -116,7 +134,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 	$(LCC) $(LCCFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
-$(BINS):	$(PNGS) $(OBJS)
+$(BINS):	$(RGOBJS) $(PNGS) $(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
 
 prepare:
@@ -133,3 +151,5 @@ cleanlvl:
 	rm -f  $(LEVDIR)/*.c
 	rm -f  $(LEVDIR)/*.h
 
+romused:
+	$(ROMUSAGE) $(OBJDIR)/$(PROJECTNAME).map -g

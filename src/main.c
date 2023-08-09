@@ -91,6 +91,7 @@ void loadLevel();
 #include "input.h"
 #include "camera.h"
 #include "animate.h"
+#include "../music/hugedriver.h"
 
 //by Arky720 a.k.a. DJArky
 int my_strlen(uint8_t TEXT[]);
@@ -115,6 +116,10 @@ void main(void)
 		HIDE_BKG; DISPLAY_OFF;
 	}
 	
+	NR52_REG = 0x80;
+	NR51_REG = 0xFF;
+	NR50_REG = 0x77;
+	
 	//turn on lcd display
 	DISPLAY_ON;
 	
@@ -125,6 +130,7 @@ void main(void)
 		if(gamemodec == 0){
 			add_VBL(vblank_sync_gameplay);
 			loadLevel();
+			hUGE_init(&hotaya);
 			gamemodec = 1;
 		}else if (gamemodec == 1){
 			handleInputGameplay();
@@ -204,7 +210,7 @@ void zombieLogic() {
 
 void vblank_sync_gameplay() {
 	move_bkg(newcameraX, 0);
-	
+	hUGE_dosound();
 }
 
 void invincibleFrameCount() {
