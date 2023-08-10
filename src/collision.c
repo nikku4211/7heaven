@@ -77,10 +77,10 @@ void playerMapCollision(const unsigned char level_num_col[]){
 		entity_left_col_coord = player_sprite_X + player_col_left;
 		x_tile_coord_left_col_entity = entity_left_col_coord >> 3;
 		
-		array_index_top_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_left = level_num_col[array_index_top_left_col_box];
 		
-		array_index_bottom_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_left = level_num_col[array_index_bottom_left_col_box];
 		
 		//if tile to the top or bottom left is solid, don't move
@@ -103,10 +103,10 @@ void playerMapCollision(const unsigned char level_num_col[]){
 		entity_right_col_coord = player_sprite_X + player_col_right;
 		x_tile_coord_right_col_entity = entity_right_col_coord >> 3;
 		
-		array_index_top_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_right = level_num_col[array_index_top_right_col_box];
 		
-		array_index_bottom_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_right = level_num_col[array_index_bottom_right_col_box];
 		
 		//if tile to the top or bottom right is solid, don't move
@@ -136,16 +136,16 @@ void playerMapCollision(const unsigned char level_num_col[]){
 		entity_right_col_coord = player_sprite_X + player_col_right;
 		x_tile_coord_right_col_entity = entity_right_col_coord >> 3;
 		
-		array_index_top_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_left = level_num_col[array_index_top_left_col_box];
 		
-		array_index_top_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_right = level_num_col[array_index_top_right_col_box];
 		
-		array_index_bottom_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_left = level_num_col[array_index_bottom_left_col_box];
 		
-		array_index_bottom_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_right = level_num_col[array_index_bottom_right_col_box];
 		
 		//if tile to the bottom left or bottom right is solid, don't move
@@ -193,10 +193,10 @@ void enemyMapCollision(const unsigned char level_num_col[]){
 		entity_left_col_coord = enemy_sprite_X + enemy_col_left;
 		x_tile_coord_left_col_entity = entity_left_col_coord >> 3;
 		
-		array_index_top_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_left = level_num_col[array_index_top_left_col_box];
 		
-		array_index_bottom_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_left = level_num_col[array_index_bottom_left_col_box];
 		
 		//if tile to the top or bottom left is solid, don't move
@@ -219,10 +219,10 @@ void enemyMapCollision(const unsigned char level_num_col[]){
 		entity_right_col_coord = enemy_sprite_X + enemy_col_right;
 		x_tile_coord_right_col_entity = entity_right_col_coord >> 3;
 		
-		array_index_top_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_right = level_num_col[array_index_top_right_col_box];
 		
-		array_index_bottom_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_right = level_num_col[array_index_bottom_right_col_box];
 		
 		//if tile to the top or bottom right is solid, don't move
@@ -252,16 +252,16 @@ void enemyMapCollision(const unsigned char level_num_col[]){
 		entity_right_col_coord = enemy_sprite_X + enemy_col_right;
 		x_tile_coord_right_col_entity = entity_right_col_coord >> 3;
 		
-		array_index_top_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_left = level_num_col[array_index_top_left_col_box];
 		
-		array_index_top_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_top_col_entity << 5);
+		array_index_top_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_top_col_entity << 5);
 		tile_col_type_top_right = level_num_col[array_index_top_right_col_box];
 		
-		array_index_bottom_left_col_box = (x_tile_coord_left_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_left_col_box = ((x_tile_coord_left_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_left = level_num_col[array_index_bottom_left_col_box];
 		
-		array_index_bottom_right_col_box = (x_tile_coord_right_col_entity+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
+		array_index_bottom_right_col_box = ((x_tile_coord_right_col_entity&31)+entity_screen) + (y_tile_coord_bottom_col_entity << 5);
 		tile_col_type_bottom_right = level_num_col[array_index_bottom_right_col_box];
 		
 		//if tile to the bottom left or bottom right is solid, don't move

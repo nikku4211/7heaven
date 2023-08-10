@@ -129,6 +129,7 @@ void main(void)
 	while(1){
 		if(gamemodec == 0){
 			add_VBL(vblank_sync_gameplay);
+			add_VBL(hUGE_dosound);
 			loadLevel();
 			hUGE_init(&hotaya);
 			gamemodec = 1;
@@ -210,7 +211,6 @@ void zombieLogic() {
 
 void vblank_sync_gameplay() {
 	move_bkg(newcameraX, 0);
-	hUGE_dosound();
 }
 
 void invincibleFrameCount() {
