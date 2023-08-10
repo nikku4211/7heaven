@@ -83,6 +83,8 @@ extern const level_t game_levels[];
 
 extern const level_t * current_level;
 
+extern int16_t entity_screen;
+
 INCBIN_EXTERN(player_tiles)
 INCBIN_EXTERN(zombie_tiles)
 #endif

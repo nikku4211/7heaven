@@ -92,6 +92,8 @@ const level_t game_levels[] = {
 
 const level_t * current_level;
 
+int16_t entity_screen = 0;
+
 //player sprite tiles
 INCBIN(player_tiles, "res/7heavenplayerspritesheettspr.2bpp")
 
