@@ -77,25 +77,4 @@ int16_t map_pos_x, map_pos_y, old_map_pos_x, old_map_pos_y;
 //level variables
 uint8_t level_num = 0;
 
-//background test tilemap
-#include "../level/str3ttestmap_tile.h"
-#include "../level/str3ttestmap2_tile.h"
-
-//level collision map
-#include "../level/str3ttestmap_collision.h"
-#include "../level/str3ttestmap2_collision.h"
-
-const level_t game_levels[] = {
-    {.tile_maps = str3ttestmap_tile, .collision_maps = str3ttestmap_collision, .map_width = 32, .map_height = 18}, 
-		{.tile_maps = str3ttestmap2_tile, .collision_maps = str3ttestmap2_collision, .map_width = 64, .map_height = 18}, 
-};
-
-const level_t * current_level;
-
 int16_t entity_screen = 0;
-
-//player sprite tiles
-INCBIN(player_tiles, "res/7heavenplayerspritesheettspr.2bpp")
-
-//zombie sprite tiles
-INCBIN(zombie_tiles, "res/zombieenemyspritesheettspr.2bpp")

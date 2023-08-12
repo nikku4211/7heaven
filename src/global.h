@@ -1,5 +1,5 @@
 #ifndef __GLOBAL_H_INCLUDE
-#define __GLOBAL_H_INCLUDEs
+#define __GLOBAL_H_INCLUDE
 
 extern uint8_t gamemodec;
 
@@ -79,12 +79,5 @@ typedef struct level_t {
 		const uint8_t map_height;
 } level_t; 
 
-extern const level_t game_levels[];
-
-extern const level_t * current_level;
-
 extern int16_t entity_screen;
-
-INCBIN_EXTERN(player_tiles)
-INCBIN_EXTERN(zombie_tiles)
 #endif

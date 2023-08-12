@@ -1,3 +1,9 @@
+#include <gbdk/platform.h>
+
+#pragma bank 255
+
+BANKREF(str3ttestmap2_collision)
+
 const unsigned char str3ttestmap2_collision[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

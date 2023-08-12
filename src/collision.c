@@ -24,6 +24,7 @@
 #define enemy_col_bottom 15
 
 #include "global.h"
+#include "levellist.h"
 
 	//define entity collision box
 	static uint16_t entity_left_col_coord;

@@ -46,7 +46,7 @@ endif
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
-LCCFLAGS = -Wm-yc -Wm-ys -Wl-j -Wm-yS -debug # -Wf--verbose 
+LCCFLAGS = -Wm-yc -Wm-ys -Wl-j -Wm-yS -Wl-yt0x1B -Wm-yoA -autobank -debug # -Wf--verbose 
 
 # You can set the name of the .gb ROM file here
 PROJECTNAME    = 7heaven
@@ -152,4 +152,4 @@ cleanlvl:
 	rm -f  $(LEVDIR)/*.h
 
 romused:
-	$(ROMUSAGE) $(OBJDIR)/$(PROJECTNAME).map -g
+	$(ROMUSAGE) $(OBJDIR)/$(PROJECTNAME).cdb -nB

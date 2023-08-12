@@ -1,3 +1,9 @@
+#include <gbdk/platform.h>
+
+#pragma bank 255
+
+BANKREF(str3ttestmap_tile)
+
 const unsigned char str3ttestmap_tile[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

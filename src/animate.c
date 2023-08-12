@@ -12,6 +12,7 @@
 #include "../res/spritemaps.h"
 
 #include "global.h"
+#include "spritelist.h"
 
 #define playidleleft    0
 #define playwalkleft1   1

@@ -93,6 +93,9 @@ void loadLevel();
 #include "animate.h"
 #include "../music/hugedriver.h"
 
+#include "levellist.h"
+#include "spritelist.h"
+
 //by Arky720 a.k.a. DJArky
 int my_strlen(uint8_t TEXT[]);
 //modified from code by Arky720 a.k.a. DJArky
