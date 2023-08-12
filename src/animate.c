@@ -32,7 +32,8 @@
 #define playattackright2 14
 #define playattackright3 15
 
-void scanline_player_graphics_upload() {
+void scanline_player_graphics_upload() NONBANKED {
+	SWITCH_ROM(BANK(player_tiles));
 	vmemcpy(_VRAM8000+0+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[0], 32);
 	vmemcpy(_VRAM8000+32+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[1], 32);
 	vmemcpy(_VRAM8000+64+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[2], 32);
@@ -56,7 +57,7 @@ void scanline_player_graphics_upload() {
 	dub_buffer_counter++;
 }
 
-void setPlayerFrameMap(uint8_t spritemap_index) {
+void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 	//player sprite graphics
 	//double buffer when uploading player sprite tiles from a spritemap list
 	
@@ -90,7 +91,7 @@ void setPlayerFrameMap(uint8_t spritemap_index) {
 	}
 }
 
-void animatePlayer(){
+void animatePlayer() NONBANKED {
 	if (frame_rate_counter==0){
 		//if player attacks, play the attack animation at 60/3 fps, more priority than walking
 		if (player_attack){
@@ -198,7 +199,7 @@ void animatePlayer(){
 	}
 }
 
-void setEnemyFrameMap(unsigned char enemy_frame_map[]) {
+void setEnemyFrameMap(unsigned char enemy_frame_map[]) NONBANKED {
 	//enemy sprite graphics
 	//leave the entire spritesheet in vram, but change sprite tile indexes according to a spritemap
 	

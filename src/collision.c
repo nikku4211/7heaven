@@ -56,7 +56,7 @@
 	
 	void getHurt();
 	
-void playerMapCollision(const unsigned char level_num_col[]){
+void playerMapCollision(const unsigned char level_num_col[]) NONBANKED {
 	entity_sprite_previous_Y = player_sprite_Y;
 	
 	entity_screen = (player_sprite_X & 0xFF00) << 2;
@@ -174,7 +174,7 @@ void playerMapCollision(const unsigned char level_num_col[]){
 		}
 }
 
-void enemyMapCollision(const unsigned char level_num_col[]){
+void enemyMapCollision(const unsigned char level_num_col[]) NONBANKED {
 	entity_sprite_previous_Y = enemy_sprite_Y;
 	
 	entity_screen = (enemy_sprite_X & 0xFF00) << 2;
@@ -291,7 +291,7 @@ void enemyMapCollision(const unsigned char level_num_col[]){
 	
 }
 
-void playerEnemyCollision() {
+void playerEnemyCollision() NONBANKED {
 	int16_t player_left_col_coord;
 	int16_t player_right_col_coord;
 	int16_t player_top_col_coord;

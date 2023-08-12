@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "global.h"
+#include "levellist.h"
 
 //how far does the player go before camera moves?
 #define camera_bound_left 72
@@ -17,7 +18,7 @@
 
 #define MIN(A,B) ((A)<(B)?(A):(B))
 
-void camera() {
+void camera() NONBANKED {
 	//prevent player from going out of bounds
 	if(player_sprite_X < 0){
 		player_sprite_X = 0;
