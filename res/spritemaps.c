@@ -2,6 +2,8 @@
 #include <gbdk/platform.h>
 #include <stdint.h>
 
+#pragma bank 255
+
 /*
 player spritemap format:
 tile source in 8x16, x-offset, y-offset, unused

@@ -54,7 +54,7 @@
 	
 	static int16_t entity_sprite_previous_Y;
 	
-	void getHurt();
+	void getHurt(void);
 	
 void playerMapCollision(const unsigned char level_num_col[]) NONBANKED {
 	entity_sprite_previous_Y = player_sprite_Y;
@@ -291,7 +291,7 @@ void enemyMapCollision(const unsigned char level_num_col[]) NONBANKED {
 	
 }
 
-void playerEnemyCollision() NONBANKED {
+void playerEnemyCollision(void) NONBANKED {
 	int16_t player_left_col_coord;
 	int16_t player_right_col_coord;
 	int16_t player_top_col_coord;

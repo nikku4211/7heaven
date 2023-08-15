@@ -69,22 +69,22 @@ uint8_t dead_hud_map[8] = {
 	242, 242, 242, 242, 242, 242, 242, 242
 };
 
-void handleInputGameplay();
+void handleInputGameplay(void);
 void handleInputMenu(uint8_t menuOptionsTotal);
-void camera();
+void camera(void);
 void playerMapCollision(const unsigned char level_num_col[]);
 void enemyMapCollision(const unsigned char level_num_col[]);
 void setPlayerFrameMap(uint8_t spritemap_index);
-void animatePlayer();
+void animatePlayer(void);
 void setEnemyFrameMap(unsigned char enemy_frame_map[]);
-void zombieLogic();
-void scanline_player_graphics_upload();
-void vblank_sync_gameplay();
-void invincibleFrameCount();
-void playerEnemyCollision();
-void getHurt();
-void gameOver();
-void loadLevel();
+void zombieLogic(void);
+void scanline_player_graphics_upload(void);
+void vblank_sync_gameplay(void);
+void invincibleFrameCount(void);
+void playerEnemyCollision(void);
+void getHurt(void);
+void gameOver(void) BANKED;
+void loadLevel(void);
 
 #include "main.h"
 #include "collision.h"
@@ -103,7 +103,7 @@ void print_text_win(uint8_t xt, uint8_t yt, uint8_t TEXT[]);
 //modified from code by Arky720 a.k.a. DJArky
 void print_text_bkg(uint8_t xt, uint8_t yt, uint8_t TEXT[]);
 
-void main(void)
+void main(void) NONBANKED
 {
 	//make it greyscale not greenscale
 	if (_cpu == CGB_TYPE) {
@@ -112,7 +112,7 @@ void main(void)
 		set_sprite_palette(1, 1, greyscale);
   }
 	if (sgb_check()) {
-		for (uint8_t i = 4; i != 0; i--) wait_vbl_done();
+		for (uint8_t i = 4; i != 0; i--) vsync();
 		SHOW_BKG; DISPLAY_ON;
 
     sgb_transfer((void *)&PAL01);
@@ -172,6 +172,8 @@ void main(void)
 			
 			invincibleFrameCount();
 		} else if (gamemodec == 2) {
+			_saved_bank = CURRENT_BANK;
+			SWITCH_ROM(BANK(gameOver));
 			gameOver();
 		} else if (gamemodec == 3) {
 			//draw menu cursor
@@ -184,9 +186,10 @@ void main(void)
 			
 			if (menuOption == 0 && menuConfirm){
 				menuConfirm = FALSE;
+				SWITCH_ROM(_saved_bank);
 				gamemodec = 0;
 				//wait until next frame
-				wait_vbl_done();
+				vsync();
 				
 				if (_cpu == CGB_TYPE) {
 						set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
@@ -197,11 +200,11 @@ void main(void)
 		}
 		
 		// Done processing, yield CPU and wait for start of next frame
-    wait_vbl_done();
+    vsync();
 	}
 }
 
-void zombieLogic() {
+void zombieLogic(void) NONBANKED{
 	if(enemy_move_counter > 0){
 		enemy_move_counter--;
 	} else if(enemy_move_counter == 0){
@@ -212,11 +215,11 @@ void zombieLogic() {
 	}
 }
 
-void vblank_sync_gameplay() {
+void vblank_sync_gameplay(void) NONBANKED{
 	move_bkg(newcameraX, 0);
 }
 
-void invincibleFrameCount() {
+void invincibleFrameCount(void) NONBANKED{
 	if(player_invincible_counter != 0){
 		player_invincible_counter--;
 		if ((dub_buffer_counter & 1) == 1){
@@ -254,7 +257,7 @@ void print_text_bkg(uint8_t xt, uint8_t yt, uint8_t TEXT[]){
 	set_bkg_based_tiles(xt,yt,my_strlen(TEXT),1,TEXT, 224);
 }
 
-void getHurt(){
+void getHurt(void) NONBANKED{
 	player_life--;
 	player_invincible_counter = player_invincible_value;
 	if (player_life < 8) {
@@ -265,8 +268,14 @@ void getHurt(){
 	}
 }
 
-void gameOver(){
+BANKREF(gameOver)
+void gameOver(void) BANKED {
 	remove_VBL(vblank_sync_gameplay);
+	hUGE_mute_channel(HT_CH1,HT_CH_MUTE);
+	hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
+	hUGE_mute_channel(HT_CH3,HT_CH_MUTE);
+	hUGE_mute_channel(HT_CH4,HT_CH_MUTE);
+	remove_VBL(hUGE_dosound);
 	// Set the screen to black via the palettes to hide the image draw
 	if (_cpu == CGB_TYPE) {
 			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, cgb_pal_black);
@@ -286,7 +295,7 @@ void gameOver(){
   HIDE_SPRITES;
 	
 	//wait until next frame
-	wait_vbl_done();
+	vsync();
 	
 	if (_cpu == CGB_TYPE) {
 			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
@@ -296,7 +305,7 @@ void gameOver(){
 	gamemodec = 3;
 }
 
-void loadLevel(){
+void loadLevel(void) NONBANKED{
 	
 	gamemodec = 1;
 	
@@ -333,14 +342,18 @@ void loadLevel(){
 	
 	enemy_direction=0;
 	
+	_saved_bank = CURRENT_BANK;
+	SWITCH_ROM(BANK(zombie_tiles));
 	//set zombie tile data
 	set_sprite_data(32, 44, zombie_tiles);
+	
 	//set background tile data
 	set_bkg_data(0,128,testbgset);
 	
 	map_pos_x = map_pos_y = 0; 
   old_map_pos_x = old_map_pos_y = 255;
 	
+	SWITCH_ROM(BANK(current_level->tile_maps));
 	//set background tilemap
 	set_bkg_submap(map_pos_x, map_pos_y, 32, current_level->map_height, current_level->tile_maps, current_level->map_width);
 	//set window tile data
@@ -354,4 +367,6 @@ void loadLevel(){
 	move_win(7, 128);
 	
 	set_win_tiles(1,0,2+player_life,1,health_hud_map);
+	
+	SWITCH_ROM(_saved_bank);
 }

@@ -4,14 +4,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#pragma bank 255
+
 #include "global.h"
 
 uint8_t joy;
 uint8_t joypast;
 
-void loadLevel();
+void loadLevel(void);
 
-void handleInputGameplay() {
+void handleInputGameplay(void) NONBANKED {
 	//give joy the pad state right now
 		joy = joypad();
 	

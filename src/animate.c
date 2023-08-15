@@ -32,16 +32,18 @@
 #define playattackright2 14
 #define playattackright3 15
 
-void scanline_player_graphics_upload() NONBANKED {
-	SWITCH_ROM(BANK(player_tiles));
-	vmemcpy(_VRAM8000+0+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[0], 32);
-	vmemcpy(_VRAM8000+32+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[1], 32);
+void scanline_player_graphics_upload(void) NONBANKED {
+	//SWITCH_ROM(BANK(player_tiles));
+	//copy sprite cel to VRAM
+	vmemcpy(_VRAM8000+((dub_buffer_counter & 1)<<8), &player_cel[0], 256);
+	/*vmemcpy(_VRAM8000+32+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[1], 32);
 	vmemcpy(_VRAM8000+64+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[2], 32);
 	vmemcpy(_VRAM8000+96+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[3], 32);
 	vmemcpy(_VRAM8000+128+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[4], 32);
 	vmemcpy(_VRAM8000+160+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[5], 32);
 	vmemcpy(_VRAM8000+192+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[6], 32);
 	vmemcpy(_VRAM8000+224+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[7], 32);
+	*/
 	
 	/*
 	set_sprite_data( 0+((dub_buffer_counter & 1)<<4), 2, player_tiles+player_tile_locations[0]);
@@ -64,6 +66,16 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 	for (uint8_t i = 0; i < 8; i++) {
 		player_tile_locations[i]=smtilesources[(spritemap_index<<3)+i]<<5;
 	}
+	
+	//copy desired player tiles into WRAM sprite cel mirror
+	memcpy(&player_cel[0], player_tiles+player_tile_locations[0], 32);
+	memcpy(&player_cel[32], player_tiles+player_tile_locations[1], 32);
+	memcpy(&player_cel[64], player_tiles+player_tile_locations[2], 32);
+	memcpy(&player_cel[96], player_tiles+player_tile_locations[3], 32);
+	memcpy(&player_cel[128], player_tiles+player_tile_locations[4], 32);
+	memcpy(&player_cel[160], player_tiles+player_tile_locations[5], 32);
+	memcpy(&player_cel[192], player_tiles+player_tile_locations[6], 32);
+	memcpy(&player_cel[224], player_tiles+player_tile_locations[7], 32);
 	
 	if ((dub_buffer_counter & 1) == 0) {
 		set_sprite_tile(0,  0);
@@ -91,7 +103,7 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 	}
 }
 
-void animatePlayer() NONBANKED {
+void animatePlayer(void) NONBANKED {
 	if (frame_rate_counter==0){
 		//if player attacks, play the attack animation at 60/3 fps, more priority than walking
 		if (player_attack){

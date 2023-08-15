@@ -59,6 +59,8 @@ extern uint8_t enemy_animation_frame;
 
 extern uint16_t player_tile_locations[8];
 
+extern unsigned char player_cel[256];
+
 extern bool vblank_end;
 
 // current and old positions of the camera in pixels
@@ -80,4 +82,8 @@ typedef struct level_t {
 } level_t; 
 
 extern int16_t entity_screen;
+
+//bank variables
+
+extern uint8_t _saved_bank;
 #endif

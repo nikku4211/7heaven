@@ -6,6 +6,6 @@
 
 void playerMapCollision(const unsigned char level_num_col[]);
 void enemyMapCollision(const unsigned char level_num_col[]);
-void playerEnemyCollision();
+void playerEnemyCollision(void);
 
 #endif

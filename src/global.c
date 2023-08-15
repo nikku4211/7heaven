@@ -66,6 +66,8 @@ uint8_t enemy_animation_frame;
 
 uint16_t player_tile_locations[8] = {0,0,0,0,0,0,0,0};
 
+unsigned char player_cel[256];
+
 // current and old positions of the camera in pixels
 int16_t cameraX, cameraY;
 
@@ -78,3 +80,7 @@ int16_t map_pos_x, map_pos_y, old_map_pos_x, old_map_pos_y;
 uint8_t level_num = 0;
 
 int16_t entity_screen = 0;
+
+//bank variables
+
+uint8_t _saved_bank;

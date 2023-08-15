@@ -1,4 +1,6 @@
 
+#pragma bank 255
+
 #ifndef __spritemaps_h_INCLUDE
 #define __spritemaps_h_INCLUDE
 

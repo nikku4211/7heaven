@@ -18,7 +18,7 @@
 
 #define MIN(A,B) ((A)<(B)?(A):(B))
 
-void camera() NONBANKED {
+void camera(void) NONBANKED {
 	//prevent player from going out of bounds
 	if(player_sprite_X < 0){
 		player_sprite_X = 0;
