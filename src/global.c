@@ -81,6 +81,10 @@ uint8_t level_num = 0;
 
 int16_t entity_screen = 0;
 
+const uint8_t total_levels = 2;
+
 //bank variables
 
 uint8_t _saved_bank;
+
+uint8_t music_bank;

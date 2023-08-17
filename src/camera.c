@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "levellist.h"
+#include "../res/spritemaps.h"
 
 //how far does the player go before camera moves?
 #define camera_bound_left 72
@@ -19,6 +20,7 @@
 #define MIN(A,B) ((A)<(B)?(A):(B))
 
 void camera(void) NONBANKED {
+	_saved_bank = CURRENT_BANK;
 	//prevent player from going out of bounds
 	if(player_sprite_X < 0){
 		player_sprite_X = 0;
@@ -50,6 +52,7 @@ void camera(void) NONBANKED {
 		newcameraX = (current_level->map_width << 3) - horizontalresolution;
 	}
 	
+	SWITCH_ROM(current_level->bank_tile);
 	//check if part of a new tilemap needs to be uploaded
 	map_pos_x = (uint8_t)(newcameraX >> 3u);
 	if (map_pos_x != old_map_pos_x) {
@@ -68,6 +71,7 @@ void camera(void) NONBANKED {
 	
 	//draw player sprite position
 	
+	/*
 	move_sprite(0, player_sprite_X   -newcameraX, player_sprite_Y+   player_tile_y_offset[0]);
 	move_sprite(1, player_sprite_X+8 -newcameraX, player_sprite_Y+   player_tile_y_offset[1]);
 	move_sprite(2, player_sprite_X+16-newcameraX, player_sprite_Y+   player_tile_y_offset[2]);
@@ -76,11 +80,15 @@ void camera(void) NONBANKED {
 	move_sprite(5, player_sprite_X+8 -newcameraX, player_sprite_Y+16+player_tile_y_offset[5]);
 	move_sprite(6, player_sprite_X+16-newcameraX, player_sprite_Y+16+player_tile_y_offset[6]);
 	move_sprite(7, player_sprite_X+24-newcameraX, player_sprite_Y+16+player_tile_y_offset[7]);
-		
+	*/
+	
+	SWITCH_ROM(playermeta);
+	move_metasprite_ex(playermeta[0], 0, 0, 0, player_sprite_X - newcameraX, player_sprite_Y);
 	
 	//draw enemy sprite position
 	move_sprite(8 , enemy_sprite_X  -newcameraX, enemy_sprite_Y   +enemy_tile_y_offset[0]);
 	move_sprite(9 , enemy_sprite_X+8-newcameraX, enemy_sprite_Y   +enemy_tile_y_offset[0]);
 	move_sprite(10, enemy_sprite_X  -newcameraX, enemy_sprite_Y+16+enemy_tile_y_offset[0]);
 	move_sprite(11, enemy_sprite_X+8-newcameraX, enemy_sprite_Y+16+enemy_tile_y_offset[0]);
+	SWITCH_ROM(_saved_bank);
 }

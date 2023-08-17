@@ -45,7 +45,10 @@ void handleInputGameplay(void) NONBANKED {
 		}
 		
 		if (joy & J_SELECT) {
-			level_num = 1;
+			level_num++;
+			if (level_num > total_levels) {
+				level_num = 0;
+			}
 			loadLevel();
 		}
 		

@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include <gbdk/platform.h>
+#include <gbdk/metasprites.h>
 #include <stdint.h>
 
 #pragma bank 255
@@ -139,6 +140,7 @@ tile source in 8x16, y-offset, x-flip, y-flip
 //zombie
 //walk
 
+/*
 const unsigned char zombiewalk1[] = {
 	 0, 0, 0, 0,   2, 0, 0, 0,
 	22, 0, 0, 0,  24, 0, 0, 0
@@ -168,4 +170,52 @@ const unsigned char zombieburn3[] = {
 const unsigned char zombieburn4[] = {
 	18, 0, 0, 0,  20, 0, 0, 0,
 	40, 0, 0, 0,  42, 0, 0, 0
+};
+*/
+
+BANKREF(zombiemeta)
+
+const metasprite_t zombiewalk1[] = {
+	METASPR_ITEM( 0, 0,  0, 0), METASPR_ITEM( 0, 8,  2, 0),
+	METASPR_ITEM(16, 0, 22, 0), METASPR_ITEM(16, 8, 24, 0)
+};
+
+const metasprite_t zombiewalk2[] = {
+	METASPR_ITEM( 1, 0,  0, 0), METASPR_ITEM( 1, 8, 2, 0),
+	METASPR_ITEM(16, 0, 26, 0), METASPR_ITEM(16, 8, 4, 0)
+};
+
+const metasprite_t zombieburn1[] = {
+	METASPR_ITEM( 0, 0,  6, 0), METASPR_ITEM( 0, 8,  8, 0),
+	METASPR_ITEM(16, 0, 28, 0), METASPR_ITEM(16, 8, 30, 0)
+};
+
+const metasprite_t zombieburn2[] = {
+	METASPR_ITEM( 0, 0, 10, 0), METASPR_ITEM( 0, 8, 12, 0),
+	METASPR_ITEM(16, 0, 32, 0), METASPR_ITEM(16, 8, 34, 0)
+};
+
+const metasprite_t zombieburn3[] = {
+	METASPR_ITEM( 0, 0, 14, 0), METASPR_ITEM( 0, 8, 16, 0),
+	METASPR_ITEM(16, 0, 36, 0), METASPR_ITEM(16, 8, 38, 0)
+};
+
+const metasprite_t zombieburn4[] = {
+	METASPR_ITEM( 0, 0, 18, 0), METASPR_ITEM( 0, 8, 20, 0),
+	METASPR_ITEM(16, 0, 40, 0), METASPR_ITEM(16, 8, 42, 0)
+};
+
+const metasprite_t* const zombiemeta[6] = {
+	zombiewalk1, zombiewalk2, zombieburn1, zombieburn2, zombieburn3, zombieburn4
+};
+
+BANKREF(playermeta)
+
+const metasprite_t playermetasu[] = {
+	METASPR_ITEM( 0, 0, 0, 0), METASPR_ITEM( 0, 8,  2, 0), METASPR_ITEM( 0, 16,  4, 0), METASPR_ITEM( 0, 24,  6, 0), 
+	METASPR_ITEM(16, 0, 8, 0), METASPR_ITEM(16, 8, 10, 0), METASPR_ITEM(16, 16, 12, 0), METASPR_ITEM(16, 24, 14, 0), 
+};
+
+const metasprite_t* const playermeta[1] = {
+	playermetasu
 };

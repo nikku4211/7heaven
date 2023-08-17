@@ -1,3 +1,4 @@
+#include <gbdk/metasprites.h>
 
 #pragma bank 255
 
@@ -25,15 +26,28 @@ extern const unsigned char playwalkright4[];
 extern const unsigned char playattackright1[];
 extern const unsigned char playattackright2[];
 extern const unsigned char playattackright3[];
-*/
+
 extern const unsigned char zombiewalk1[];
 extern const unsigned char zombiewalk2[];
 extern const unsigned char zombieburn1[];
 extern const unsigned char zombieburn2[];
 extern const unsigned char zombieburn3[];
 extern const unsigned char zombieburn4[];
+*/
 
+extern const metasprite_t zombiewalk1[];
+extern const metasprite_t zombiewalk2[];
+extern const metasprite_t zombieburn1[];
+extern const metasprite_t zombieburn2[];
+extern const metasprite_t zombieburn3[];
+extern const metasprite_t zombieburn4[];
 
-extern const metasprite_t* const sprite_metasprites[5];
+extern const metasprite_t* const zombiemeta[6];
+BANKREF_EXTERN(zombiemeta)
+
+extern const metasprite_t playermetasu[];
+
+extern const metasprite_t* const playermeta[1];
+BANKREF_EXTERN(playermeta)
 
 #endif

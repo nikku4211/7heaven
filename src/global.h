@@ -79,11 +79,17 @@ typedef struct level_t {
     const unsigned char * collision_maps;
 		const uint8_t map_width;
 		const uint8_t map_height;
+		const uint8_t bank_tile;
+		const uint8_t bank_collision;
 } level_t; 
 
 extern int16_t entity_screen;
 
+extern const uint8_t total_levels;
+
 //bank variables
 
 extern uint8_t _saved_bank;
+
+extern uint8_t music_bank;
 #endif

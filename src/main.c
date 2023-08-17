@@ -92,6 +92,7 @@ void loadLevel(void);
 #include "camera.h"
 #include "animate.h"
 #include "../music/hugedriver.h"
+#include "../music/wraps.h"
 
 #include "levellist.h"
 #include "spritelist.h"
@@ -132,9 +133,9 @@ void main(void) NONBANKED
 	while(1){
 		if(gamemodec == 0){
 			add_VBL(vblank_sync_gameplay);
-			add_VBL(hUGE_dosound);
+			add_VBL(hUGE_dosound_wrapper);
 			loadLevel();
-			hUGE_init(&hotaya);
+			hUGE_init_wrapper(&hotaya, BANK(hotayab));
 			gamemodec = 1;
 		}else if (gamemodec == 1){
 			handleInputGameplay();
@@ -210,7 +211,7 @@ void zombieLogic(void) NONBANKED{
 	} else if(enemy_move_counter == 0){
 		enemy_move_counter=enemy_move_divisor;
 		enemy_move_left = TRUE;
-		setEnemyFrameMap(zombiewalk1);
+		//setEnemyFrameMap(zombiewalk1);
 		enemyMapCollision(current_level->collision_maps);
 	}
 }
@@ -275,7 +276,7 @@ void gameOver(void) BANKED {
 	hUGE_mute_channel(HT_CH2,HT_CH_MUTE);
 	hUGE_mute_channel(HT_CH3,HT_CH_MUTE);
 	hUGE_mute_channel(HT_CH4,HT_CH_MUTE);
-	remove_VBL(hUGE_dosound);
+	remove_VBL(hUGE_dosound_wrapper);
 	// Set the screen to black via the palettes to hide the image draw
 	if (_cpu == CGB_TYPE) {
 			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, cgb_pal_black);
@@ -346,16 +347,18 @@ void loadLevel(void) NONBANKED{
 	SWITCH_ROM(BANK(zombie_tiles));
 	//set zombie tile data
 	set_sprite_data(32, 44, zombie_tiles);
-	
+	SWITCH_ROM(BANK(testbgset));
 	//set background tile data
 	set_bkg_data(0,128,testbgset);
 	
 	map_pos_x = map_pos_y = 0; 
   old_map_pos_x = old_map_pos_y = 255;
 	
-	SWITCH_ROM(BANK(current_level->tile_maps));
+	SWITCH_ROM(current_level->bank_tile);
 	//set background tilemap
 	set_bkg_submap(map_pos_x, map_pos_y, 32, current_level->map_height, current_level->tile_maps, current_level->map_width);
+	
+	SWITCH_ROM(BANK(healthfont));
 	//set window tile data
 	set_win_data(240,4,healthfont);
 

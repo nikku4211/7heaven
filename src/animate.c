@@ -33,7 +33,6 @@
 #define playattackright3 15
 
 void scanline_player_graphics_upload(void) NONBANKED {
-	//SWITCH_ROM(BANK(player_tiles));
 	//copy sprite cel to VRAM
 	vmemcpy(_VRAM8000+((dub_buffer_counter & 1)<<8), &player_cel[0], 256);
 	/*vmemcpy(_VRAM8000+32+((dub_buffer_counter & 1)<<8), player_tiles+player_tile_locations[1], 32);
@@ -67,6 +66,8 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 		player_tile_locations[i]=smtilesources[(spritemap_index<<3)+i]<<5;
 	}
 	
+	_saved_bank = CURRENT_BANK;
+	SWITCH_ROM(BANK(player_tiles));
 	//copy desired player tiles into WRAM sprite cel mirror
 	memcpy(&player_cel[0], player_tiles+player_tile_locations[0], 32);
 	memcpy(&player_cel[32], player_tiles+player_tile_locations[1], 32);
@@ -101,6 +102,7 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 	for (uint8_t i = 0; i < 8; i++) {
 		player_tile_y_offset[i]=smyoffsets[(spritemap_index<<3)+i];
 	}
+	SWITCH_ROM(_saved_bank);
 }
 
 void animatePlayer(void) NONBANKED {

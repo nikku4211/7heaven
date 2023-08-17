@@ -57,6 +57,8 @@
 	void getHurt(void);
 	
 void playerMapCollision(const unsigned char level_num_col[]) NONBANKED {
+	_saved_bank = CURRENT_BANK;
+	SWITCH_ROM(current_level->bank_collision);
 	entity_sprite_previous_Y = player_sprite_Y;
 	
 	entity_screen = (player_sprite_X & 0xFF00) << 2;
@@ -172,9 +174,12 @@ void playerMapCollision(const unsigned char level_num_col[]) NONBANKED {
 			}
 			}
 		}
+		SWITCH_ROM(_saved_bank);
 }
 
 void enemyMapCollision(const unsigned char level_num_col[]) NONBANKED {
+	_saved_bank = CURRENT_BANK;
+	SWITCH_ROM(current_level->bank_collision);
 	entity_sprite_previous_Y = enemy_sprite_Y;
 	
 	entity_screen = (enemy_sprite_X & 0xFF00) << 2;
@@ -288,7 +293,7 @@ void enemyMapCollision(const unsigned char level_num_col[]) NONBANKED {
 			}
 			}
 		}
-	
+		SWITCH_ROM(_saved_bank);
 }
 
 void playerEnemyCollision(void) NONBANKED {
