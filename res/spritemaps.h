@@ -46,8 +46,9 @@ extern const metasprite_t* const zombiemeta[6];
 BANKREF_EXTERN(zombiemeta)
 
 extern const metasprite_t playermetasu[];
+extern const metasprite_t playermetasud[];
 
-extern const metasprite_t* const playermeta[1];
+extern const metasprite_t* const playermeta[2];
 BANKREF_EXTERN(playermeta)
 
 #endif

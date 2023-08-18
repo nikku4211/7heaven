@@ -56,6 +56,7 @@ extern uint8_t frame_rate_divisor;
 extern uint8_t frame_rate_counter;
 extern uint8_t player_animation_frame;
 extern uint8_t enemy_animation_frame;
+extern uint8_t enemy_frame_num;
 
 extern uint16_t player_tile_locations[8];
 

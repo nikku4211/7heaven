@@ -343,7 +343,6 @@ void playerEnemyCollision(void) NONBANKED {
 			player_attack_bottom_col_coord > enemy_top_col_coord && 
 			player_attack_top_col_coord < enemy_bottom_col_coord){
 		enemy_present = FALSE;
-		enemy_sprite_Y = 224;
 	} else if (player_attack &&
 			player_direction == 1 &&
 			player_attack_right_col_coord + 16 > enemy_left_col_coord &&
@@ -351,6 +350,5 @@ void playerEnemyCollision(void) NONBANKED {
 			player_attack_bottom_col_coord > enemy_top_col_coord && 
 			player_attack_top_col_coord < enemy_bottom_col_coord) {
 		enemy_present = FALSE;
-		enemy_sprite_Y = 224;
 	}
 }

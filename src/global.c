@@ -63,6 +63,7 @@ uint8_t frame_rate_divisor;
 uint8_t frame_rate_counter;
 uint8_t player_animation_frame;
 uint8_t enemy_animation_frame;
+uint8_t enemy_frame_num;
 
 uint16_t player_tile_locations[8] = {0,0,0,0,0,0,0,0};
 

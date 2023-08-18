@@ -176,33 +176,33 @@ const unsigned char zombieburn4[] = {
 BANKREF(zombiemeta)
 
 const metasprite_t zombiewalk1[] = {
-	METASPR_ITEM( 0, 0,  0, 0), METASPR_ITEM( 0, 8,  2, 0),
-	METASPR_ITEM(16, 0, 22, 0), METASPR_ITEM(16, 8, 24, 0)
+	METASPR_ITEM( 0,  0,  0, 0), METASPR_ITEM(0, 8,  2, 0),
+	METASPR_ITEM(16, -8, 22, 0), METASPR_ITEM(0, 8, 24, 0), METASPR_TERM
 };
 
 const metasprite_t zombiewalk2[] = {
-	METASPR_ITEM( 1, 0,  0, 0), METASPR_ITEM( 1, 8, 2, 0),
-	METASPR_ITEM(16, 0, 26, 0), METASPR_ITEM(16, 8, 4, 0)
+	METASPR_ITEM( 1,  0,  0, 0), METASPR_ITEM(0, 8, 2, 0),
+	METASPR_ITEM(16, -8, 26, 0), METASPR_ITEM(0, 8, 4, 0), METASPR_TERM
 };
 
 const metasprite_t zombieburn1[] = {
-	METASPR_ITEM( 0, 0,  6, 0), METASPR_ITEM( 0, 8,  8, 0),
-	METASPR_ITEM(16, 0, 28, 0), METASPR_ITEM(16, 8, 30, 0)
+	METASPR_ITEM( 0,  0,  6, 0), METASPR_ITEM(0, 8,  8, 0),
+	METASPR_ITEM(16, -8, 28, 0), METASPR_ITEM(0, 8, 30, 0), METASPR_TERM
 };
 
 const metasprite_t zombieburn2[] = {
-	METASPR_ITEM( 0, 0, 10, 0), METASPR_ITEM( 0, 8, 12, 0),
-	METASPR_ITEM(16, 0, 32, 0), METASPR_ITEM(16, 8, 34, 0)
+	METASPR_ITEM( 0,  0, 10, 0), METASPR_ITEM(0, 8, 12, 0),
+	METASPR_ITEM(16, -8, 32, 0), METASPR_ITEM(0, 8, 34, 0), METASPR_TERM
 };
 
 const metasprite_t zombieburn3[] = {
-	METASPR_ITEM( 0, 0, 14, 0), METASPR_ITEM( 0, 8, 16, 0),
-	METASPR_ITEM(16, 0, 36, 0), METASPR_ITEM(16, 8, 38, 0)
+	METASPR_ITEM( 0,  0, 14, 0), METASPR_ITEM(0, 8, 16, 0),
+	METASPR_ITEM(16, -8, 36, 0), METASPR_ITEM(0, 8, 38, 0), METASPR_TERM
 };
 
 const metasprite_t zombieburn4[] = {
-	METASPR_ITEM( 0, 0, 18, 0), METASPR_ITEM( 0, 8, 20, 0),
-	METASPR_ITEM(16, 0, 40, 0), METASPR_ITEM(16, 8, 42, 0)
+	METASPR_ITEM( 0,  0, 18, 0), METASPR_ITEM(0, 8, 20, 0),
+	METASPR_ITEM(16, -8, 40, 0), METASPR_ITEM(0, 8, 42, 0), METASPR_TERM
 };
 
 const metasprite_t* const zombiemeta[6] = {
@@ -212,10 +212,15 @@ const metasprite_t* const zombiemeta[6] = {
 BANKREF(playermeta)
 
 const metasprite_t playermetasu[] = {
-	METASPR_ITEM( 0, 0, 0, 0), METASPR_ITEM( 0, 8,  2, 0), METASPR_ITEM( 0, 16,  4, 0), METASPR_ITEM( 0, 24,  6, 0), 
-	METASPR_ITEM(16, 0, 8, 0), METASPR_ITEM(16, 8, 10, 0), METASPR_ITEM(16, 16, 12, 0), METASPR_ITEM(16, 24, 14, 0), 
+	METASPR_ITEM( 0,   0, 0, 0), METASPR_ITEM( 0, 8,  2, 0), METASPR_ITEM( 0, 8,  4, 0), METASPR_ITEM( 0, 8,  6, 0), 
+	METASPR_ITEM(16, -24, 8, 0), METASPR_ITEM( 0, 8, 10, 0), METASPR_ITEM( 0, 8, 12, 0), METASPR_ITEM( 0, 8, 14, 0), METASPR_TERM
 };
 
-const metasprite_t* const playermeta[1] = {
-	playermetasu
+const metasprite_t playermetasud[] = {
+	METASPR_ITEM( 0,   0, 16, 0), METASPR_ITEM( 0, 8, 18, 0), METASPR_ITEM( 0, 8, 20, 0), METASPR_ITEM( 0, 8, 22, 0), 
+	METASPR_ITEM(16, -24, 24, 0), METASPR_ITEM( 0, 8, 26, 0), METASPR_ITEM( 0, 8, 28, 0), METASPR_ITEM( 0, 8, 30, 0), METASPR_TERM
+};
+
+const metasprite_t* const playermeta[2] = {
+	playermetasu, playermetasud
 };

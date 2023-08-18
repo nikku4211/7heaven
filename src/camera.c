@@ -82,13 +82,25 @@ void camera(void) NONBANKED {
 	move_sprite(7, player_sprite_X+24-newcameraX, player_sprite_Y+16+player_tile_y_offset[7]);
 	*/
 	
-	SWITCH_ROM(playermeta);
-	move_metasprite_ex(playermeta[0], 0, 0, 0, player_sprite_X - newcameraX, player_sprite_Y);
+	SWITCH_ROM(BANK(playermeta));
+	
+	if ((dub_buffer_counter & 1) == 0) {
+		move_metasprite_ex(playermeta[0], 0, 0, 0, player_sprite_X - newcameraX, player_sprite_Y);
+	} else {
+		move_metasprite_ex(playermeta[1], 0, 0, 0, player_sprite_X - newcameraX, player_sprite_Y);
+	}
 	
 	//draw enemy sprite position
-	move_sprite(8 , enemy_sprite_X  -newcameraX, enemy_sprite_Y   +enemy_tile_y_offset[0]);
+	/* move_sprite(8 , enemy_sprite_X  -newcameraX, enemy_sprite_Y   +enemy_tile_y_offset[0]);
 	move_sprite(9 , enemy_sprite_X+8-newcameraX, enemy_sprite_Y   +enemy_tile_y_offset[0]);
 	move_sprite(10, enemy_sprite_X  -newcameraX, enemy_sprite_Y+16+enemy_tile_y_offset[0]);
-	move_sprite(11, enemy_sprite_X+8-newcameraX, enemy_sprite_Y+16+enemy_tile_y_offset[0]);
+	move_sprite(11, enemy_sprite_X+8-newcameraX, enemy_sprite_Y+16+enemy_tile_y_offset[0]); */
+	
+	if (enemy_present && (enemy_sprite_X-newcameraX) < horizontalresolution && (enemy_sprite_X-newcameraX+16) > 0) {
+		move_metasprite_ex(zombiemeta[enemy_frame_num], 32, 0, 8, enemy_sprite_X - newcameraX, enemy_sprite_Y);
+	} else {
+		hide_metasprite(zombiemeta[enemy_frame_num], 8);
+	}
+	
 	SWITCH_ROM(_saved_bank);
 }

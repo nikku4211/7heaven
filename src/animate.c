@@ -78,7 +78,7 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 	memcpy(&player_cel[192], player_tiles+player_tile_locations[6], 32);
 	memcpy(&player_cel[224], player_tiles+player_tile_locations[7], 32);
 	
-	if ((dub_buffer_counter & 1) == 0) {
+	/* if ((dub_buffer_counter & 1) == 0) {
 		set_sprite_tile(0,  0);
 		set_sprite_tile(1,  2);
 		set_sprite_tile(2,  4);
@@ -96,12 +96,14 @@ void setPlayerFrameMap(uint8_t spritemap_index) NONBANKED {
 		set_sprite_tile(5, 26);
 		set_sprite_tile(6, 28);
 		set_sprite_tile(7, 30);
-	}
+	} */
 	
 	//offset sprites within the player metasprite to save more tiles
+	/*
 	for (uint8_t i = 0; i < 8; i++) {
 		player_tile_y_offset[i]=smyoffsets[(spritemap_index<<3)+i];
 	}
+	*/
 	SWITCH_ROM(_saved_bank);
 }
 
@@ -213,17 +215,19 @@ void animatePlayer(void) NONBANKED {
 	}
 }
 
-void setEnemyFrameMap(unsigned char enemy_frame_map[]) NONBANKED {
-	//enemy sprite graphics
-	//leave the entire spritesheet in vram, but change sprite tile indexes according to a spritemap
+/* void setEnemyFrameMap(unsigned char enemy_frame_map[]) NONBANKED {
+	enemy sprite graphics
+	leave the entire spritesheet in vram, but change sprite tile indexes according to a spritemap
 	
 	for (uint8_t i = 0; i < 4; i++) {
 		set_sprite_tile(i+8, enemy_frame_map[(i<<2)]+32);
 	}
 	
 	
-	//offset sprites within the enemy metasprite to save more tiles
+	offset sprites within the enemy metasprite to save more tiles
 	for (uint8_t i = 0; i < 8; i++) {
 		enemy_tile_y_offset[i]=enemy_frame_map[(i<<2)+1];
 	}
-}
+	
+	
+} */

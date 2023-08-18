@@ -76,7 +76,7 @@ void playerMapCollision(const unsigned char level_num_col[]);
 void enemyMapCollision(const unsigned char level_num_col[]);
 void setPlayerFrameMap(uint8_t spritemap_index);
 void animatePlayer(void);
-void setEnemyFrameMap(unsigned char enemy_frame_map[]);
+//void setEnemyFrameMap(unsigned char enemy_frame_map[]);
 void zombieLogic(void);
 void scanline_player_graphics_upload(void);
 void vblank_sync_gameplay(void);
@@ -163,7 +163,7 @@ void main(void) NONBANKED
 			
 			scanline_player_graphics_upload();
 			
-			if(enemy_present && (enemy_sprite_X-cameraX) < horizontalresolution && (enemy_sprite_X-cameraX) > 0){
+			if(enemy_present && (enemy_sprite_X-cameraX) < horizontalresolution && (enemy_sprite_X-cameraX+16) > 0){
 				zombieLogic();
 				playerEnemyCollision();
 			}
@@ -211,7 +211,7 @@ void zombieLogic(void) NONBANKED{
 	} else if(enemy_move_counter == 0){
 		enemy_move_counter=enemy_move_divisor;
 		enemy_move_left = TRUE;
-		//setEnemyFrameMap(zombiewalk1);
+		enemy_frame_num = 0;
 		enemyMapCollision(current_level->collision_maps);
 	}
 }

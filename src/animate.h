@@ -6,7 +6,7 @@
 
 void setPlayerFrameMap(uint8_t spritemap_index);
 void animatePlayer(void);
-void setEnemyFrameMap(unsigned char enemy_frame_map[]);
+//void setEnemyFrameMap(unsigned char enemy_frame_map[]);
 void scanline_player_graphics_upload(void);
 
 #endif
