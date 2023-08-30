@@ -31,6 +31,8 @@ P2AFLAGSSPR = -tiles_only -map -bin
 P2AFLAGSTIL = -tiles_only -map -bin
 P2AFLAGSMAP = -maps_only -map -bin
 
+P2AFLAGSTM = -map
+
 PNGTOCHR = $(TOOLDIR)/pngtochr
 
 P2CFLAGSTIL = -p 0,1
@@ -46,7 +48,7 @@ endif
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
-LCCFLAGS = -Wm-yc -Wm-ys -Wl-j -Wm-yS -Wl-yt0x1B -Wm-yoA -autobank -debug # -Wf--verbose 
+LCCFLAGS = -Wm-yc -Wm-ys -Wl-j -Wm-yS -Wl-yt0x1B -Wm-yoA -autobank -debug -Wf--verbose 
 
 # You can set the name of the .gb ROM file here
 PROJECTNAME    = 7heaven
@@ -64,6 +66,7 @@ ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 RGBASMSOURCES	=	$(foreach dir,$(MUSDIR),$(notdir $(wildcard $(dir)/*.asm)))
 #LEVELS		 = 	$(LEVELFILES:%.csv=$(LEVDIR)/%.c) $(LEVELFILES:%.csv=$(LEVDIR)/%.h)
 PNGS       =	$(IMAGEFILES:%.png=$(RESDIR)/%.2bpp)
+CPNGS			= $($(RESDIR)/titlescreen.png=$(RESDIR)/titlescreen.c)
 OBJS			 =	$(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o) $(RGBASMSOURCES:%.asm=$(OBJDIR)/%.o)
 RGOBJS		 =	$(RGBASMSOURCES:%.asm=$(OBJDIR)/%.obj)
 
@@ -72,6 +75,10 @@ all:	prepare $(BINS)
 compile.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > compile.bat
 	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
+
+# Compile title image in "res/" to row-major 2bpp tileset and tilemap
+$(RESDIR)/titlescreen.c:	$(RESDIR)/titlescreen.png
+	$(PNG2ASSET) $< $(P2AFLAGSTM) -o $@
 
 # Compile .png files in "res/" to row-major 2bpp files
 $(RESDIR)/%.2bpp:	$(RESDIR)/%.png
@@ -134,7 +141,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 	$(LCC) $(LCCFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
-$(BINS):	$(RGOBJS) $(PNGS) $(OBJS)
+$(BINS):	$(RGOBJS) $(PNGS) $(OBJS) $(CPNGS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
 
 prepare:
