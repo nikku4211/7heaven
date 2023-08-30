@@ -85,6 +85,7 @@ void playerEnemyCollision(void);
 void getHurt(void);
 void gameOver(void) BANKED;
 void loadLevel(void);
+void titleDisplay(void) BANKED;
 
 #include "main.h"
 #include "collision.h"
@@ -96,6 +97,8 @@ void loadLevel(void);
 
 #include "levellist.h"
 #include "spritelist.h"
+#include "titlegfx.h"
+#include "../res/titlescreen.c"
 
 //by Arky720 a.k.a. DJArky
 int my_strlen(uint8_t TEXT[]);
@@ -198,6 +201,10 @@ void main(void) NONBANKED
 						BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
 				}
 			}
+		} else if (gamemodec == 4) {
+			_saved_bank = CURRENT_BANK;
+			SWITCH_ROM(BANK(titleDisplay));
+			titleDisplay();
 		}
 		
 		// Done processing, yield CPU and wait for start of next frame
@@ -372,4 +379,24 @@ void loadLevel(void) NONBANKED{
 	set_win_tiles(1,0,2+player_life,1,health_hud_map);
 	
 	SWITCH_ROM(_saved_bank);
+}
+
+BANKREF(titleDisplay)
+void titleDisplay(void) BANKED{
+	
+	HIDE_BKG;
+	HIDE_SPRITES;
+	HIDE_WIN;
+	
+	SWITCH_ROM(BANK(title_tiles));
+	
+	// Set the screen to black via the palettes to hide the image draw
+	if (_cpu == CGB_TYPE) {
+			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, cgb_pal_black);
+	} else {
+			BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_BLACK, DMG_BLACK, DMG_BLACK);
+	}
+	
+	set_bkg_data(0, 128, title_tiles);
+	
 }
