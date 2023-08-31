@@ -2,7 +2,7 @@
 Grim reaper Game Boy game for GBCompo23
 
 ![7heaven Title Screen](graphics/7heaventitle.png)
-![7heaven Gameplay](graphics/7heavengameplay.png)
+![7heaven Gameplay](7heavengameplay.png)
 
 # Build instructions
 
