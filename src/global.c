@@ -6,7 +6,7 @@
 
 #include "global.h"
 
-uint8_t gamemodec = 0;
+uint8_t gamemodec = 4;
 
 uint8_t menuOption;
 
