@@ -81,3 +81,14 @@ void handleInputMenu(uint8_t menuOptionsTotal) {
 		
 		joypast = joy;
 }
+
+void handleInputTitle(void) {
+	//give joy the pad state right now
+		joy = joypad();
+	
+		if (joy & J_START && !(joypast & J_START)){
+			menuConfirm = TRUE;
+		}
+		
+		joypast = joy;
+}
