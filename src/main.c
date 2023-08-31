@@ -71,6 +71,7 @@ uint8_t dead_hud_map[8] = {
 
 void handleInputGameplay(void);
 void handleInputMenu(uint8_t menuOptionsTotal);
+void handleInputTitle(void);
 void camera(void);
 void playerMapCollision(const unsigned char level_num_col[]);
 void enemyMapCollision(const unsigned char level_num_col[]);
@@ -85,7 +86,7 @@ void playerEnemyCollision(void);
 void getHurt(void);
 void gameOver(void) BANKED;
 void loadLevel(void);
-void titleDisplay(void) BANKED;
+void titleDisplay(void);
 
 #include "main.h"
 #include "collision.h"
@@ -97,8 +98,7 @@ void titleDisplay(void) BANKED;
 
 #include "levellist.h"
 #include "spritelist.h"
-#include "titlegfx.h"
-#include "../res/titlescreen.c"
+#include "../res/titlescreenp2a.h"
 
 //by Arky720 a.k.a. DJArky
 int my_strlen(uint8_t TEXT[]);
@@ -200,11 +200,31 @@ void main(void) NONBANKED
 				} else {
 						BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
 				}
+			} else if (menuOption == 1 && menuConfirm) {
+				menuConfirm = FALSE;
+				SWITCH_ROM(_saved_bank);
+				gamemodec = 4;
+				//wait until next frame
+				vsync();
+				
+				if (_cpu == CGB_TYPE) {
+						set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
+				} else {
+						BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
+				}
 			}
 		} else if (gamemodec == 4) {
 			_saved_bank = CURRENT_BANK;
-			SWITCH_ROM(BANK(titleDisplay));
 			titleDisplay();
+		} else if (gamemodec == 5) {
+			//select from 2 options in menu
+			handleInputTitle();
+			
+			if (menuConfirm){
+				menuConfirm = FALSE;
+				gamemodec = 0;
+				vsync();
+			}
 		}
 		
 		// Done processing, yield CPU and wait for start of next frame
@@ -305,6 +325,7 @@ void gameOver(void) BANKED {
 	//wait until next frame
 	vsync();
 	
+	//restore the palette
 	if (_cpu == CGB_TYPE) {
 			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
 	} else {
@@ -381,14 +402,13 @@ void loadLevel(void) NONBANKED{
 	SWITCH_ROM(_saved_bank);
 }
 
-BANKREF(titleDisplay)
-void titleDisplay(void) BANKED{
+void titleDisplay(void) NONBANKED{
 	
 	HIDE_BKG;
 	HIDE_SPRITES;
 	HIDE_WIN;
 	
-	SWITCH_ROM(BANK(title_tiles));
+	SWITCH_ROM(BANK(titlescreenp2a));
 	
 	// Set the screen to black via the palettes to hide the image draw
 	if (_cpu == CGB_TYPE) {
@@ -397,6 +417,21 @@ void titleDisplay(void) BANKED{
 			BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_BLACK, DMG_BLACK, DMG_BLACK);
 	}
 	
-	set_bkg_data(0, 128, title_tiles);
+	set_bkg_data(0, 204, titlescreenp2a_tiles);
+	set_bkg_tiles(0, 0, 20, 18, titlescreenp2a_map);
+	
+	vsync();
+	
+	//restore the palette
+	if (_cpu == CGB_TYPE) {
+			set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
+	} else {
+			BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
+	}
+	
+	SHOW_BKG;
+	gamemodec = 5;
+	
+	SWITCH_ROM(_saved_bank);
 	
 }
