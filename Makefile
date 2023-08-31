@@ -59,14 +59,14 @@ RESDIR      = res
 LEVDIR			= level
 MUSDIR			= music
 IMAGEFILES  = $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.png)))
+CIMAGEFILES  = $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*p2a.png)))
 #LEVELFILES = $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.csv)))
 BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(LEVDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(MUSDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 RGBASMSOURCES	=	$(foreach dir,$(MUSDIR),$(notdir $(wildcard $(dir)/*.asm)))
 #LEVELS		 = 	$(LEVELFILES:%.csv=$(LEVDIR)/%.c) $(LEVELFILES:%.csv=$(LEVDIR)/%.h)
-PNGS       =	$(IMAGEFILES:%.png=$(RESDIR)/%.2bpp)
-CPNGS			= $($(RESDIR)/titlescreen.png=$(RESDIR)/titlescreen.c)
+PNGS       =	$(IMAGEFILES:%.png=$(RESDIR)/%.2bpp) $(CIMAGEFILES:%p2a.png=$(RESDIR)/%p2a.c)
 OBJS			 =	$(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o) $(RGBASMSOURCES:%.asm=$(OBJDIR)/%.o)
 RGOBJS		 =	$(RGBASMSOURCES:%.asm=$(OBJDIR)/%.obj)
 
@@ -75,10 +75,6 @@ all:	prepare $(BINS)
 compile.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > compile.bat
 	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
-
-# Compile title image in "res/" to row-major 2bpp tileset and tilemap
-$(RESDIR)/titlescreen.c:	$(RESDIR)/titlescreen.png
-	$(PNG2ASSET) $< $(P2AFLAGSTM) -o $@
 
 # Compile .png files in "res/" to row-major 2bpp files
 $(RESDIR)/%.2bpp:	$(RESDIR)/%.png
@@ -89,6 +85,10 @@ $(RESDIR)/%spr.2bpp:	$(RESDIR)/%spr.png
 	$(PNGTOCHR) $(P2CFLAGSSPR) -i $< -o $@
 #	$(PNG2ASSET) $< $(P2AFLAGSSPR) -c $@
 #	tools/gfx --png $< --interleave -o $@ $@
+
+# Compile title image in "res/" to row-major 2bpp tileset and tilemap
+$(RESDIR)/%p2a.c:	$(RESDIR)/%p2a.png
+	$(PNG2ASSET) $< $(P2AFLAGSTM) -o $@
 
 # Compile .csv files in "level/" to C arrays
 #$(LEVDIR)/%.c:	$(LEVDIR)/%.csv
@@ -141,7 +141,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 	$(LCC) $(LCCFLAGS) -S -o $@ $<
 
 # Link the compiled object files into a .gb ROM file
-$(BINS):	$(RGOBJS) $(PNGS) $(OBJS) $(CPNGS)
+$(BINS):	$(RGOBJS) $(PNGS) $(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
 
 prepare:
