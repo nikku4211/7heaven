@@ -196,9 +196,9 @@ void main(void) NONBANKED
 				vsync();
 				
 				if (_cpu == CGB_TYPE) {
-						set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
+					set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, cgb_pal_black);
 				} else {
-						BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
+					BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_BLACK, DMG_BLACK, DMG_BLACK);
 				}
 			} else if (menuOption == 1 && menuConfirm) {
 				menuConfirm = FALSE;
@@ -224,6 +224,12 @@ void main(void) NONBANKED
 				menuConfirm = FALSE;
 				gamemodec = 0;
 				vsync();
+				
+				if (_cpu == CGB_TYPE) {
+					set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, cgb_pal_black);
+				} else {
+					BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_BLACK, DMG_BLACK, DMG_BLACK);
+				}
 			}
 		}
 		
@@ -389,15 +395,21 @@ void loadLevel(void) NONBANKED{
 	SWITCH_ROM(BANK(healthfont));
 	//set window tile data
 	set_win_data(240,4,healthfont);
-
-	//show window, background and sprites
-	SHOW_WIN;
-	SHOW_BKG;
-  SHOW_SPRITES;
 	
 	move_win(7, 128);
 	
 	set_win_tiles(1,0,2+player_life,1,health_hud_map);
+	
+	if (_cpu == CGB_TYPE) {
+		set_bkg_palette(BKGF_CGB_PAL0, CGB_ONE_PAL, greyscale);
+	} else {
+		BGP_REG = DMG_PALETTE(DMG_WHITE, DMG_LITE_GRAY, DMG_DARK_GRAY, DMG_BLACK);
+	}
+	
+	//show window, background and sprites
+	SHOW_WIN;
+	SHOW_BKG;
+  SHOW_SPRITES;
 	
 	SWITCH_ROM(_saved_bank);
 }
