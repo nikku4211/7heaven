@@ -31,7 +31,7 @@ P2AFLAGSSPR = -tiles_only -map -bin
 P2AFLAGSTIL = -tiles_only -map -bin
 P2AFLAGSMAP = -maps_only -map -bin
 
-P2AFLAGSTM = -map
+P2AFLAGSTM = -map -noflip -no_palettes
 
 PNGTOCHR = $(TOOLDIR)/pngtochr
 
@@ -153,6 +153,8 @@ clean:
 	
 cleangfx:
 	rm -f  $(RESDIR)/*.2bpp
+	rm -f  $(RESDIR)/*p2a.c
+	rm -f  $(RESDIR)/*p2a.h
 	
 cleanlvl:
 	rm -f  $(LEVDIR)/*.c
